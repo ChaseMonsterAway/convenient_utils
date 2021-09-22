@@ -65,10 +65,10 @@ setup(
     name='convenient_utils',
     version='0.1.0',
     packages=find_packages(),
-    url='https://github.com/ChaseMonsterAway/convenient_utils',
+    url='https://github.com/ChaseMonsterAway/cutils',
     author='jsun',
     author_email='junsunxidian@163.com',
-    description='Some convinient tools for project.',
+    description='Some convinient utils for project.',
     long_description=read('README.md'),
     install_requires=[
         'cython',
