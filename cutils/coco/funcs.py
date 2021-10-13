@@ -186,3 +186,27 @@ def split_coco_trainval_save(
         open(os.path.join(save_dir, 'val.json', 'w')),
         indent=4,
     )
+
+
+def expand(json_path, out_json, expand_ratio=0.1):
+    jfiles = json.load(open(json_path))
+    images = jfiles['images']
+    annos = jfiles['annotations']
+    _, _, id_lists = filename_id_mapping(images)
+    for anno in annos:
+        img_id = anno['image_id']
+        height, width = images[id_lists.index(img_id)]
+        box = anno['bbox']
+        area = anno['area']
+        x, y, w, h = box
+        x = max(0, x - expand_ratio * w)
+        y = max(0, y - expand_ratio * h)
+        w = min(width - 1, x + w * (1 + 2 * expand_ratio)) - x
+        h = min(height - 1, y + h * (1 + 2 * expand_ratio)) - y
+        anno['bbox'] = [x, y, w, h]
+        anno['area'] = w * h
+    json.dump(
+        jfiles,
+        open(out_json, 'w'),
+        indent=4,
+    )
