@@ -548,5 +548,3 @@ class CombineCoCo:
             new_categories.append(new_category)
 
         return new_categories
-
-

@@ -63,7 +63,7 @@ ext_modules = []
 
 setup(
     name='convenient_utils',
-    version='0.1.0',
+    version='0.1.1',
     packages=find_packages(),
     url='https://github.com/ChaseMonsterAway/cutils',
     author='jsun',

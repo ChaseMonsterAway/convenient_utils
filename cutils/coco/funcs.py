@@ -84,17 +84,25 @@ def remove_duplicate_label(json_file):
 
 
 def filename_id_mapping(imgs_info: list):
+    """
+    create id mapping among filename and img id.
+    """
     filename_to_id = dict()
     id_to_filename = dict()
+    id_lists = list()
     for img in imgs_info:
         filename = img['file_name']
         img_id = img['id']
+        id_lists.append(img_id)
         filename_to_id[filename] = img_id
         id_to_filename[img_id] = filename
-    return filename_to_id, id_to_filename
+    return filename_to_id, id_to_filename, id_lists
 
 
 def annotations_collections(annotations: list):
+    """
+    collect annotations together if the annotations appear in same image.
+    """
     anno_collections = defaultdict(list)
     for anno in annotations:
         image_id = anno['image_id']
