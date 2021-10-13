@@ -195,7 +195,7 @@ def expand(json_path, out_json, expand_ratio=0.1):
     _, _, id_lists = filename_id_mapping(images)
     for anno in annos:
         img_id = anno['image_id']
-        height, width = images[id_lists.index(img_id)]
+        height, width = images[id_lists.index(img_id)]['height'], images[id_lists.index(img_id)]['width']
         box = anno['bbox']
         area = anno['area']
         x, y, w, h = box
