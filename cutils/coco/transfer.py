@@ -32,7 +32,7 @@ class PartDpI:
         24: 'Head',
     }
     part_to_dp_I = {}
-    for key, value in dp_I_to_part:
+    for key, value in dp_I_to_part.items():
         if value in part_to_dp_I:
             part_to_dp_I[value].append(key)
         else:
