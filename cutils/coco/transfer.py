@@ -88,16 +88,33 @@ def extract_box_from_coco_dp(
         for anno in collect_annos[id]:
             box = anno['bbox']
             x, y, w, h = box
-            anno_dp_I = anno['dp_I']
-            anno_dp_x = anno['dp_x']
-            anno_dp_y = anno['dp_y']
+            if 'dp_I' not in anno:
+                c_annos = dict(
+                    segmentation=[],
+                    area=box[2] * box[3],
+                    iscrowd=1,
+                    image_id=img_id - 1,
+                    bbox=[box[0], box[1], box[2], box[3]],
+                    category_id=categories.index(PartDpI.dp_I_to_part[ndi]) + 1,
+                    id=anno_id,
+                )
+                base_coco['annotations'].append(c_annos)
+                anno_id += 1
+                continue
+            try:
+                anno_dp_I = anno['dp_I']
+                anno_dp_x = anno['dp_x']
+                anno_dp_y = anno['dp_y']
+            except:
+                import pdb
+                pdb.set_trace()
             for ndi in need_dp_I:
                 c_dp_x = [
-                    x + anno_dp_x[int(di)] / 255 * x
+                    x + anno_dp_x[int(i)] / 255.0 * w
                     for i, di in enumerate(anno_dp_I) if di == ndi
                 ]
                 c_dp_y = [
-                    y + anno_dp_y[int(di)] / 255 * y
+                    y + anno_dp_y[int(i)] / 255.0 * h
                     for i, di in enumerate(anno_dp_I) if di == ndi
                 ]
                 if not c_dp_x:
@@ -105,14 +122,18 @@ def extract_box_from_coco_dp(
 
                 cx1, cy1 = min(c_dp_x), min(c_dp_y)
                 cx2, cy2 = max(c_dp_x), max(c_dp_y)
-                w, h = cx2 - cx1, cy2 - cy1
+                cw, ch = cx2 - cx1, cy2 - cy1
+                if  cx1 == cx2 or cy1 == cy2:
+                    # import pdb
+                    # pdb.set_trace()
+                    continue
                 c_annos = dict(
                     segmentation=[],
-                    area=w * h,
-                    iscrowd=0,
+                    area=cw * ch,
+                    iscrowd=anno['iscrowd'],
                     image_id=img_id - 1,
-                    bbox=[cx1, cy1, w, h],
-                    category_id=categories.index(PartDpI.dp_I_to_part[ndi]),
+                    bbox=[cx1, cy1, cw, ch],
+                    category_id=categories.index(PartDpI.dp_I_to_part[ndi]) + 1,
                     id=anno_id,
                 )
                 base_coco['annotations'].append(c_annos)
