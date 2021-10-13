@@ -100,6 +100,9 @@ def extract_box_from_coco_dp(
                     y + anno_dp_y[int(di)] / 255 * y
                     for i, di in enumerate(anno_dp_I) if di == ndi
                 ]
+                if not c_dp_x:
+                    continue
+
                 cx1, cy1 = min(c_dp_x), min(c_dp_y)
                 cx2, cy2 = max(c_dp_x), max(c_dp_y)
                 w, h = cx2 - cx1, cy2 - cy1
