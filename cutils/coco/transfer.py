@@ -69,7 +69,7 @@ def extract_box_from_coco_dp(
     collect_annos = annotations_collections(annotations)
 
     # 3. create base coco dict
-    base_coco = base_coco_format(
+    base_coco, label_to_categories = base_coco_format(
         need_categories=categories
     )
 
